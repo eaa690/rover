@@ -11,11 +11,13 @@
     <main role="main" class="container">
       <div class="starter-template">
         <h1>EAA 690 Summer Camp 2022 - M.A.R.S Rover</h1>
-        <form th:action="@{/rover/authenticate}" th:object="${rover}" method="post">
-            <input type="text" th:field="*{passcode}" />
+        <form th:action="@{/rover}" method="post">
+            <input type="hidden" th:field="*{passcode}" />
+            <input type="text" th:field="*{command}" />
             <input type="submit" value="Submit" />
         </form>
       </div>
+      <p th:text="${rover.name}" />
     </main>
     <!-- /.container -->
     <script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>

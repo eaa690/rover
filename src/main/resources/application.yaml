@@ -34,3 +34,6 @@ welcome:
 spring:
   thymeleaf:
     cache: false
+  jpa:
+    hibernate:
+      ddl-auto: create

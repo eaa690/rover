@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,17 +59,6 @@ public class RoverController {
     @Autowired
     public RoverController(final PictureProperties props) {
         rootLocation = Paths.get(props.getRootLocation());
-    }
-
-    @GetMapping("/rovers/{id}")
-    public Rover getRovers(@PathVariable("id") Long id) {
-        return roverRepository
-                .findAll()
-                .orElseGet(Collections::emptyList)
-                .stream()
-                .filter(rover -> rover.getId() == id)
-                .findAny()
-                .get();
     }
 
     @GetMapping("/pictures/{roverId}")
