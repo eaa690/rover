@@ -1,5 +1,6 @@
 package org.eaa690.rover;
 
+import lombok.extern.slf4j.Slf4j;
 import org.eaa690.rover.model.Rover;
 import org.eaa690.rover.model.RoverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +8,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Controller
 public class WebController {
 
@@ -25,25 +31,98 @@ public class WebController {
 
     @GetMapping("/")
     public String main(final Model model) {
+        log.info("GET / called");
         model.addAttribute("message", message);
-        model.addAttribute("rover", null);
+        model.addAttribute("rover", new Rover());
+        log.info("Returning \"welcome\"");
         return "welcome";
     }
 
     @PostMapping("/rover")
-    public String rover(@RequestBody final Rover rover, final Model model) {
+    public String rover(@ModelAttribute("rover") final Rover rover, final Model model) {
+        log.info("POST /rover called with rover: {}", rover);
+        StringBuilder sb = new StringBuilder();
+        sb.append("import rover\n");
+        sb.append("try:\n");
+        sb.append("  rover.init(0)\n");
+        final String[] commands = rover.getCommand().split("\n");
+        for (String command : commands) {
+            sb.append("  ");
+            sb.append(command.trim());
+            sb.append("\n");
+        }
+        sb.append("\n");
+        sb.append("except Exception as e:\n");
+        sb.append("  print (e)\n");
+        try (PrintWriter out =
+                     new PrintWriter(new BufferedWriter(new FileWriter(rover.getName() + "-command.py")));) {
+            out.println(sb);
+            formatScript(rover);
+            sendScriptToRover(rover);
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
+        log.info("Returning \"rover\"");
         return "rover";
     }
 
+    private void sendScriptToRover(final Rover rover) {
+        try {
+            log.info("Sending script to rover...");
+            final Process process = Runtime.getRuntime().exec("scp -p " + rover.getName() +
+                    "-command.py pi@" + rover.getName() + ":~");
+            process.waitFor(10, TimeUnit.SECONDS);
+            final BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = inputReader.readLine()) != null) {
+                log.info("Input stream received: {}", line);
+            }
+            final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            while ((line = errorReader.readLine()) != null) {
+                log.info("Error stream received: {}", line);
+            }
+            inputReader.close();
+            errorReader.close();
+            log.info("send complete");
+        } catch (InterruptedException | IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    private void formatScript(final Rover rover) {
+        try {
+            log.info("formatting script...");
+            final Process process = Runtime.getRuntime().exec("black " + rover.getName() + "-command.py");
+            process.waitFor(5, TimeUnit.SECONDS);
+            final BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = inputReader.readLine()) != null) {
+                log.info("Input stream received: {}", line);
+            }
+            final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            while ((line = errorReader.readLine()) != null) {
+                log.info("Error stream received: {}", line);
+            }
+            inputReader.close();
+            errorReader.close();
+            log.info("format complete");
+        } catch (InterruptedException | IOException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
     @PostMapping("/rover/authenticate")
-    public String authRover(@RequestBody final Rover rover, final Model model) {
+    public String authRover(@ModelAttribute("rover") final Rover rover, final Model model) {
+        log.info("POST /rover/authenticate called with rover: {}", rover);
         roverRepository
                 .findAll()
                 .flatMap(rovers -> rovers
                     .stream()
                     .filter(r -> r.getPasscode().equals(rover.getPasscode()))
                     .findFirst())
-                .ifPresent(value -> model.addAttribute("rover", value));
+                .ifPresentOrElse(value -> model.addAttribute("rover", value),
+                        () -> model.addAttribute("rover", new Rover()));
+        log.info("Returning \"{}\" with rover set to {}", "rover", model.getAttribute("rover"));
         return "rover";
     }
 

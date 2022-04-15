@@ -2,6 +2,7 @@ package org.eaa690.rover.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Rover {
 
     /**
@@ -38,4 +40,10 @@ public class Rover {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Transient
     private String command;
+
+    public Rover(Long id, String name, String passcode) {
+        this.id = id;
+        this.name = name;
+        this.passcode = passcode;
+    }
 }

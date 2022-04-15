@@ -12,6 +12,7 @@
       <div class="starter-template">
         <h1>EAA 690 Summer Camp 2022 - M.A.R.S Rover</h1>
         <form th:action="@{/rover/authenticate}" th:object="${rover}" method="post">
+            <p>Team passcode: </p>
             <input type="text" th:field="*{passcode}" />
             <input type="submit" value="Submit" />
         </form>
