@@ -19,7 +19,7 @@
         </form>
         <table>
           <tr th:each="r : ${rovers}" th:if="${r.active}">
-            <td><img width="1024" height="768" th:src="@{${'https://rover.eaa690.org/pictures/' + r.getId() + '/latest'}}"/></td>
+            <td><img width="1024" height="768" th:src="@{${'https://localhost:8080/pictures/' + r.getId() + '/latest'}}"/></td>
           </tr>
         </table>
       </div>
