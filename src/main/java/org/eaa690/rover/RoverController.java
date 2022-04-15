@@ -63,6 +63,7 @@ public class RoverController {
 
     @GetMapping("/pictures/{roverId}")
     public List<Picture> getPictures(@PathVariable("roverId") Long roverId) {
+        log.info("GET /pictures/{} called", roverId);
         return pictureRepository
                 .findAll()
                 .orElseGet(Collections::emptyList)
@@ -73,6 +74,7 @@ public class RoverController {
 
     @GetMapping("/pictures/{roverId}/latest")
     public ResponseEntity<Resource> getLatestPicture(@PathVariable("roverId") Long roverId) {
+        log.info("GET /pictures/{}/latest called", roverId);
         final Optional<Picture> pictureOpt = pictureRepository
                 .findAll()
                 .orElseGet(Collections::emptyList)
@@ -101,6 +103,7 @@ public class RoverController {
     void addPicture(@PathVariable("roverId") final Long roverId,
                     @RequestParam("file") final MultipartFile file,
                     final RedirectAttributes redirectAttributes) {
+        log.info("POST /pictures/{} called", roverId);
         final Picture picture = new Picture();
         picture.setRoverId(roverId);
         picture.setTimestamp(ZonedDateTime.now());

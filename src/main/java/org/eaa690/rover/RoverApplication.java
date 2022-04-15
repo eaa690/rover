@@ -36,7 +36,7 @@ public class RoverApplication {
 		roverRepository.save(new Rover(7L, "black-rover", "9437", false));
 	}
 
-	@Scheduled(cron = "0 * * ? * *")
+	@Scheduled(cron = "*/30 * * ? * *")
 	public void rotateActiveRover() {
 		int roverCount;
 		long activeRoverId = 1L;
