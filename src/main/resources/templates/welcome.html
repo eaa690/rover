@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="refresh" content="60">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>EAA 690 Summer Camp 2022 - M.A.R.S Rover</title>
     <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
@@ -16,6 +17,11 @@
             <input type="text" th:field="*{passcode}" />
             <input type="submit" value="Submit" />
         </form>
+        <table>
+          <tr th:each="r : ${rovers}" th:if="${r.active}">
+            <td><img width="1024" height="768" th:src="@{${'https://rover.eaa690.org/pictures/' + r.getId() + '/latest'}}"/></td>
+          </tr>
+        </table>
       </div>
     </main>
     <!-- /.container -->

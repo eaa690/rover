@@ -17,6 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -34,6 +36,7 @@ public class WebController {
         log.info("GET / called");
         model.addAttribute("message", message);
         model.addAttribute("rover", new Rover());
+        roverRepository.findAll().ifPresent(rovers -> model.addAttribute("rovers", rovers));
         log.info("Returning \"welcome\"");
         return "welcome";
     }
@@ -62,6 +65,7 @@ public class WebController {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }
+        model.addAttribute("rover", rover);
         log.info("Returning \"rover\"");
         return "rover";
     }
@@ -114,16 +118,22 @@ public class WebController {
     @PostMapping("/rover/authenticate")
     public String authRover(@ModelAttribute("rover") final Rover rover, final Model model) {
         log.info("POST /rover/authenticate called with rover: {}", rover);
-        roverRepository
+        final Optional<Rover> roverOpt = roverRepository
                 .findAll()
                 .flatMap(rovers -> rovers
                     .stream()
                     .filter(r -> r.getPasscode().equals(rover.getPasscode()))
-                    .findFirst())
-                .ifPresentOrElse(value -> model.addAttribute("rover", value),
-                        () -> model.addAttribute("rover", new Rover()));
-        log.info("Returning \"{}\" with rover set to {}", "rover", model.getAttribute("rover"));
-        return "rover";
+                    .findFirst());
+        if (roverOpt.isPresent()) {
+            final Rover r = roverOpt.get();
+            model.addAttribute("rover", r);
+            log.info("Returning \"{}\" with rover set to {}", "rover", r);
+            return "rover";
+        }
+        model.addAttribute("rover", new Rover());
+        log.info("No rover found, returning \"{}\" with rover set to {}",
+                "welcome", model.getAttribute("rover"));
+        return "welcome";
     }
 
 
