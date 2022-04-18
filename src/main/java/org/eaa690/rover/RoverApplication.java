@@ -67,6 +67,7 @@ public class RoverApplication {
 					errorReader.close();
 					log.info("receive complete");
 					rover.setScriptOutput(sb.toString());
+					roverRepository.save(rover);
 				} catch (InterruptedException | IOException e) {
 					log.error(e.getMessage(), e);
 				}
