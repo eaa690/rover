@@ -35,6 +35,11 @@ public class Rover {
     private String passcode;
 
     /**
+     * Script output.
+     */
+    private String scriptOutput;
+
+    /**
      * Command to be issued to rover, in Python.
      */
     @JsonInclude(JsonInclude.Include.NON_NULL)

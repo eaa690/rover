@@ -24,12 +24,14 @@ import rover
 try:
   rover.init(0)
             </pre>
-                        <textarea rows="20" cols="80" th:field="*{command}"></textarea>
+                        <textarea rows="20" cols="60" th:field="*{command}"></textarea>
                         <pre>
 except Exception as e:
   print (e)
             </pre>
                         <input type="submit" value="Submit" />
+                        <p>Script output:</p>
+                        <textarea rows="20" cols="60" th:field="*{scriptOutput}"></textarea>
                     </form>
                 </td>
                 <td>
