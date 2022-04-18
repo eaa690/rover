@@ -15,3 +15,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+
+ajp:
+  enabled: true
+  port: 9090
