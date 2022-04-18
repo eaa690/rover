@@ -33,9 +33,9 @@ except Exception as e:
                     </form>
                 </td>
                 <td>
-                    <a th:href="@{${'http://jpl:8080/pictures/' + rover.id + '/latest'}}"
+                    <a th:href="@{${'/pictures/' + rover.id + '/latest'}}"
                        target="_blank" rel="noopener noreferrer">
-                        <img th:src="@{${'http://jpl:8080/pictures/' + rover.id + '/latest'}}"
+                        <img th:src="@{${'/pictures/' + rover.id + '/latest'}}"
                              width="246", height="328" />
                     </a>
                 </td>

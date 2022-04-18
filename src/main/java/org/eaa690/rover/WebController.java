@@ -51,7 +51,7 @@ public class WebController {
         final String[] commands = rover.getCommand().split("\n");
         for (String command : commands) {
             sb.append("  ");
-            sb.append(command.trim());
+            sb.append(command);
             sb.append("\n");
         }
         sb.append("\n");
