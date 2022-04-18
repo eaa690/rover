@@ -57,9 +57,11 @@ public class WebController {
         sb.append("\n");
         sb.append("except Exception as e:\n");
         sb.append("  print (e)\n");
-        try (PrintWriter out =
-                     new PrintWriter(new BufferedWriter(new FileWriter(rover.getName() + "-command.py")));) {
+        final String filename = rover.getName() + "-command.py";
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(filename)))) {
+            log.info("Writing {} to {}", sb, filename);
             out.println(sb);
+            out.flush();
             formatScript(rover);
             sendScriptToRover(rover);
         } catch (IOException e) {
