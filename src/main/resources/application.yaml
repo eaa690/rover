@@ -32,6 +32,11 @@ rovers:
 welcome:
   message: EAA 690 M.A.R.S Rover
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
   thymeleaf:
     cache: false
   jpa:
