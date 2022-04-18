@@ -1,36 +1,9 @@
 pictures:
   rootLocation: /home/pi/pictures
-rovers:
-  - id: 1
-    name: Rover 1
-    ipAddress: 10.0.0.45
-    passcode: 1234
-  - id: 2
-    name: Rover 2
-    ipAddress: 10.0.0.46
-    passcode: 2345
-  - id: 3
-    name: Rover 3
-    ipAddress: 10.0.0.47
-    passcode: 3456
-  - id: 4
-    name: Rover 4
-    ipAddress: 10.0.0.48
-    passcode: 4567
-  - id: 5
-    name: Rover 5
-    ipAddress: 10.0.0.49
-    passcode: 5678
-  - id: 6
-    name: Rover 6
-    ipAddress: 10.0.0.50
-    passcode: 6789
-  - id: 7
-    name: Rover 7
-    ipAddress: 10.0.0.51
-    passcode: 7890
+
 welcome:
   message: EAA 690 M.A.R.S Rover
+
 spring:
   servlet:
     multipart:

@@ -9,7 +9,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,15 +34,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-public class RoverController {
+public class PicturesController {
 
     /**
      * Root file storage location.
      */
     private final Path rootLocation;
-
-    @Autowired
-    private RoverRepository roverRepository;
 
     @Autowired
     private PictureRepository pictureRepository;
@@ -54,7 +50,7 @@ public class RoverController {
      * @param props PictureProperties
      */
     @Autowired
-    public RoverController(final PictureProperties props) {
+    public PicturesController(final PictureProperties props) {
         rootLocation = Paths.get(props.getRootLocation());
     }
 
