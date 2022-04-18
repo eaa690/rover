@@ -79,7 +79,9 @@ public class PicturesController {
         try {
             if (pictureOpt.isPresent()) {
                 final Path teamLocation = rootLocation.resolve(roverId.toString());
+                log.info("teamLocation: {}", teamLocation);
                 final Picture picture = pictureOpt.get();
+                log.info("Picture: {}", picture);
                 final Resource file = new UrlResource(teamLocation.resolve(picture.getFileName()).toUri());
                 return ResponseEntity
                         .ok()

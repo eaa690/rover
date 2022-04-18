@@ -41,12 +41,9 @@ public class Rover {
     @Transient
     private String command;
 
-    private boolean active;
-
-    public Rover(Long id, String name, String passcode, boolean active) {
+    public Rover(Long id, String name, String passcode) {
         this.id = id;
         this.name = name;
         this.passcode = passcode;
-        this.active = active;
     }
 }
