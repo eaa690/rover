@@ -11,23 +11,36 @@
     <main role="main" class="container">
       <div class="starter-template">
         <h1>EAA 690 Summer Camp 2022 - M.A.R.S Rover (<span th:text="${rover.name}"></span>)</h1>
-        <form th:action="@{/rover}" th:object="${rover}" method="post">
-            <input type="hidden" th:field="*{id}" />
-            <input type="hidden" th:field="*{name}" />
-            <input type="hidden" th:field="*{passcode}" />
-            <pre>
+        <table>
+            <tr>
+                <td>
+                    <form th:action="@{/rover}" th:object="${rover}" method="post">
+                        <input type="hidden" th:field="*{id}" />
+                        <input type="hidden" th:field="*{name}" />
+                        <input type="hidden" th:field="*{passcode}" />
+                        <pre>
 import rover
 
 try:
   rover.init(0)
             </pre>
-            <textarea rows="20" cols="80" th:field="*{command}"></textarea>
-            <pre>
+                        <textarea rows="20" cols="80" th:field="*{command}"></textarea>
+                        <pre>
 except Exception as e:
   print (e)
             </pre>
-            <input type="submit" value="Submit" />
-        </form>
+                        <input type="submit" value="Submit" />
+                    </form>
+                </td>
+                <td>
+                    <a th:href="@{${'http://jpl:8080/pictures/' + rover.id + '/latest'}}"
+                       target="_blank" rel="noopener noreferrer">
+                        <img th:src="@{${'http://jpl:8080/pictures/' + rover.id + '/latest'}}"
+                             width="246", height="328" />
+                    </a>
+                </td>
+            </tr>
+        </table>
       </div>
     </main>
     <!-- /.container -->
