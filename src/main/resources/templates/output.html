@@ -12,14 +12,16 @@
     <main role="main" class="container">
       <div class="starter-template">
         <h1>EAA 690 Summer Camp 2022 - M.A.R.S Rover (<span th:text="${rover.name}"></span>)</h1>
-        <table>
+        <table border="1">
+            <tr>
+                <th>Script Output</th>
+                <th>Latest Picture</th>
+            </tr>
             <tr>
                 <td>
-                    <p>Script Output:</p>
                     <pre th:text="${rover.scriptOutput}"></pre>
                 </td>
                 <td>
-                    <p>Latest Picture:</p>
                     <a th:href="@{${'/pictures/' + rover.id + '/latest'}}"
                        target="_blank" rel="noopener noreferrer">
                         <img th:src="@{${'/pictures/' + rover.id + '/latest'}}"
