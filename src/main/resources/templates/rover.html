@@ -10,7 +10,7 @@
   <body>
     <main role="main" class="container">
       <div class="starter-template">
-        <h1>EAA 690 Summer Camp 2022 - M.A.R.S Rover (<span th:text="${rover.name}"></span>)</h1>
+        <h1><span th:text="${rover.name}"></span> - New Command(s)</h1>
         <table>
             <tr>
                 <td>
@@ -24,22 +24,15 @@ import rover
 try:
   rover.init(0)
             </pre>
-                        <textarea rows="20" cols="60" th:field="*{command}"></textarea>
+                        <textarea rows="20" cols="80" th:field="*{command}"></textarea>
                         <pre>
 except Exception as e:
   print (e)
             </pre>
-                        <input type="submit" value="Submit" />
+                        <input type="submit" value="Send to Rover" />
                         <p><a th:href="@{${'/rover/' + rover.id}}"
                               target="_blank" rel="noopener noreferrer">Script output</a></p>
                     </form>
-                </td>
-                <td>
-                    <a th:href="@{${'/pictures/' + rover.id + '/latest'}}"
-                       target="_blank" rel="noopener noreferrer">
-                        <img th:src="@{${'/pictures/' + rover.id + '/latest'}}"
-                             width="246", height="328" />
-                    </a>
                 </td>
             </tr>
         </table>
