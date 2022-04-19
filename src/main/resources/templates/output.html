@@ -14,24 +14,7 @@
         <table>
             <tr>
                 <td>
-                    <form th:action="@{/rover}" th:object="${rover}" method="post">
-                        <input type="hidden" th:field="*{id}" />
-                        <input type="hidden" th:field="*{name}" />
-                        <input type="hidden" th:field="*{passcode}" />
-                        <pre>
-import rover
-
-try:
-  rover.init(0)
-            </pre>
-                        <textarea rows="20" cols="60" th:field="*{command}"></textarea>
-                        <pre>
-except Exception as e:
-  print (e)
-            </pre>
-                        <input type="submit" value="Submit" />
-                        <p><a th:href="@{${'/rover/' + rover.id}}">Script output</a></p>
-                    </form>
+                    <pre th:text="${rover.scriptOutput}"></pre>
                 </td>
                 <td>
                     <a th:href="@{${'/pictures/' + rover.id + '/latest'}}"

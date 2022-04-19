@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.BufferedReader;
@@ -39,6 +40,19 @@ public class WebController {
         roverRepository.findAll().ifPresent(rovers -> model.addAttribute("rovers", rovers));
         log.info("Returning \"welcome\"");
         return "welcome";
+    }
+
+    @GetMapping("/rover/{id}")
+    public String getRover(@PathVariable("id") final Long id,
+                           final Model model) {
+        log.info("GET /rover/" + id);
+        final Optional<List<Rover>> roversOpt = roverRepository.findAll();
+        if (roversOpt.isPresent()) {
+            final List<Rover> rovers = roversOpt.get();
+            final Optional<Rover> roverOpt = rovers.stream().filter(r -> r.getId() == id).findFirst();
+            roverOpt.ifPresent(rover -> model.addAttribute("rover", rover));
+        }
+        return "output";
     }
 
     @PostMapping("/rover")
