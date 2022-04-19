@@ -14,9 +14,11 @@
         <table>
             <tr>
                 <td>
+                    <p>Script Output:</p>
                     <pre th:text="${rover.scriptOutput}"></pre>
                 </td>
                 <td>
+                    <p>Latest Picture:</p>
                     <a th:href="@{${'/pictures/' + rover.id + '/latest'}}"
                        target="_blank" rel="noopener noreferrer">
                         <img th:src="@{${'/pictures/' + rover.id + '/latest'}}"
