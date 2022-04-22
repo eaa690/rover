@@ -121,10 +121,23 @@ offsets = [0]*16
 #
 # takePicture(). Takes a picture, then uploads the picture to aerie.eaa690.org
 def takePicture():
-    os.system('libcamera-jpeg -o rover.jpg') # TODO replace with roverId
-    url = 'https://aerie.eaa690.org:8443/rover/1' # TODO replace with roverId
-    files = {'file': open('rover.jpg', 'rb')} # TODO correct filename
+    os.system('libcamera-jpeg -o rover.jpg')
+    url = 'http://jpl:8080/rover/1' # TODO replace with roverId
+    files = {'file': open('rover.jpg', 'rb')}
     response = requests.post(url, files=files)
+
+#======================================================================
+# Mast Functions
+#
+# turnMastLeft(). Turns the mast to the left
+def turnMastLeft(offsetIncrement):
+    offsets[0] -= offsetIncrement
+    setServo(0, 0)
+
+# turnMastRight(). Turns the mast to the right
+def turnMastRight(offsetIncrement):
+    offsets[0] += offsetIncrement
+    setServo(0, 0)
 
 #======================================================================
 # General Functions
