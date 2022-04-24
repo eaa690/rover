@@ -35,11 +35,13 @@ public class Rover {
     /**
      * Script output.
      */
+    @Column(length = 4000)
     private String scriptOutput;
 
     /**
      * Command to be issued to rover, in Python.
      */
+    @Column(length = 4000)
     private String command;
 
     public Rover(Long id, String name, String passcode) {
