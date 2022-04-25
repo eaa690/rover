@@ -45,7 +45,7 @@ public class WebController {
     @GetMapping("/rover/{id}")
     public String getRover(@PathVariable("id") final Long id,
                            final Model model) {
-        log.info("GET /rover/" + id);
+        log.debug("GET /rover/" + id);
         final Optional<List<Rover>> roversOpt = roverRepository.findAll();
         if (roversOpt.isPresent()) {
             final List<Rover> rovers = roversOpt.get();
