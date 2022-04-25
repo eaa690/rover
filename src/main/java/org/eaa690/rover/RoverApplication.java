@@ -40,14 +40,14 @@ public class RoverApplication {
 		roverRepository.save(new Rover(7L, "black-rover", "9437"));
 	}
 
-	@Scheduled(fixedDelay = 30000)
+	@Scheduled(fixedDelay = 10000)
 	public void getScriptOutput() {
 		final Optional<List<Rover>> roversOpt = roverRepository.findAll();
 		if (roversOpt.isPresent()) {
 			final List<Rover> rovers = roversOpt.get();
 			rovers.forEach(rover -> {
 				try {
-					log.info("Retrieving script output from rover...");
+					log.debug("Retrieving script output from rover...");
 					final Process process = Runtime.getRuntime().exec("ssh pi@" + rover.getName()
 							+ " cat /home/pi/run.log");
 					process.waitFor(10, TimeUnit.SECONDS);
@@ -55,17 +55,17 @@ public class RoverApplication {
 					final StringBuilder sb = new StringBuilder();
 					String line;
 					while ((line = inputReader.readLine()) != null) {
-						log.info("Input stream received: {}", line);
+						log.debug("Input stream received: {}", line);
 						sb.append(line).append("\n");
 					}
 					final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 					while ((line = errorReader.readLine()) != null) {
-						log.info("Error stream received: {}", line);
+						log.debug("Error stream received: {}", line);
 						sb.append(line).append("\n");
 					}
 					inputReader.close();
 					errorReader.close();
-					log.info("receive complete");
+					log.debug("receive complete");
 					rover.setScriptOutput(sb.toString());
 					roverRepository.save(rover);
 				} catch (InterruptedException | IOException e) {
