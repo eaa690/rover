@@ -1,6 +1,7 @@
 package org.eaa690.rover;
 
 import lombok.extern.slf4j.Slf4j;
+import org.eaa690.rover.model.RoverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,20 +18,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -40,6 +35,9 @@ public class PicturesController {
      * Root file storage location.
      */
     private final Path rootLocation;
+
+    @Autowired
+    private RoverRepository roverRepository;
 
     /**
      * Constructor.
@@ -64,13 +62,49 @@ public class PicturesController {
         return ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/pictures/{roverId}")
+    void addPicture(@PathVariable("roverId") final Long roverId,
+                    @RequestParam("file") final MultipartFile file,
+                    final RedirectAttributes redirectAttributes) {
+        log.info("POST /pictures/{} called", roverId);
+        final Path teamLocation = rootLocation.resolve(roverId.toString());
+        try {
+            if (file.isEmpty()) {
+                log.error("Failed to store empty file.");
+            }
+            final Path destinationFile = teamLocation
+                    .resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
+                    .normalize()
+                    .toAbsolutePath();
+            if (!destinationFile.getParent().equals(teamLocation.toAbsolutePath())) {
+                // This is a security check
+                log.error("Cannot store file outside current directory.");
+            }
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            log.error("Failed to store file.", e);
+        }
+    }
+
+    @PostMapping("/rover/{roverId}/scriptresults")
+    void scriptResults(@PathVariable("roverId") final Long roverId,
+                       @RequestBody final String body) {
+        log.info("POST /rover/{}/scriptresults called with body: {}", roverId, body);
+        roverRepository.findById(roverId).ifPresent(r -> {
+            r.setScriptOutput(body);
+            roverRepository.save(r);
+        });
+    }
+
     /**
      * Gets the latest image for a rover.
      *
      * @param roverId ID
      * @return image resource
      */
-    public Resource getLatestImageAsResource(final Long roverId) {
+    private Resource getLatestImageAsResource(final Long roverId) {
         final Path teamLocation = rootLocation.resolve(roverId.toString());
         final TreeMap<Long, Resource> resourceTree = new TreeMap<>();
         loadAll(roverId).forEach(file -> {
@@ -105,7 +139,7 @@ public class PicturesController {
      * @param roverId ID
      * @return list of image paths
      */
-    public Stream<Path> loadAll(final Long roverId) {
+    private Stream<Path> loadAll(final Long roverId) {
         final Path teamLocation = rootLocation.resolve(roverId.toString());
         log.info("Loading all files at path {}", teamLocation);
         try {
@@ -120,29 +154,4 @@ public class PicturesController {
         return null;
     }
 
-    @PostMapping("/pictures/{roverId}")
-    void addPicture(@PathVariable("roverId") final Long roverId,
-                    @RequestParam("file") final MultipartFile file,
-                    final RedirectAttributes redirectAttributes) {
-        log.info("POST /pictures/{} called", roverId);
-        final Path teamLocation = rootLocation.resolve(roverId.toString());
-        try {
-            if (file.isEmpty()) {
-                log.error("Failed to store empty file.");
-            }
-            final Path destinationFile = teamLocation
-                    .resolve(Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
-                    .normalize()
-                    .toAbsolutePath();
-            if (!destinationFile.getParent().equals(teamLocation.toAbsolutePath())) {
-                // This is a security check
-                log.error("Cannot store file outside current directory.");
-            }
-            try (InputStream inputStream = file.getInputStream()) {
-                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException e) {
-            log.error("Failed to store file.", e);
-        }
-    }
 }

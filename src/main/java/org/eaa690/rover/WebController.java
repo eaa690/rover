@@ -86,6 +86,27 @@ public class WebController {
         return "rover";
     }
 
+    @PostMapping("/rover/authenticate")
+    public String authRover(@ModelAttribute("rover") final Rover rover, final Model model) {
+        log.info("POST /rover/authenticate called with rover: {}", rover);
+        final Optional<Rover> roverOpt = roverRepository
+                .findAll()
+                .flatMap(rovers -> rovers
+                        .stream()
+                        .filter(r -> r.getPasscode().equals(rover.getPasscode()))
+                        .findFirst());
+        if (roverOpt.isPresent()) {
+            final Rover r = roverOpt.get();
+            model.addAttribute("rover", r);
+            log.info("Returning \"{}\" with rover set to {}", "rover", r);
+            return "rover";
+        }
+        model.addAttribute("rover", new Rover());
+        log.info("No rover found, returning \"{}\" with rover set to {}",
+                "welcome", model.getAttribute("rover"));
+        return "welcome";
+    }
+
     private void sendScriptToRover(final Rover rover) {
         try {
             log.info("Sending script to rover...");
@@ -130,27 +151,5 @@ public class WebController {
             log.error(e.getMessage(), e);
         }
     }
-
-    @PostMapping("/rover/authenticate")
-    public String authRover(@ModelAttribute("rover") final Rover rover, final Model model) {
-        log.info("POST /rover/authenticate called with rover: {}", rover);
-        final Optional<Rover> roverOpt = roverRepository
-                .findAll()
-                .flatMap(rovers -> rovers
-                    .stream()
-                    .filter(r -> r.getPasscode().equals(rover.getPasscode()))
-                    .findFirst());
-        if (roverOpt.isPresent()) {
-            final Rover r = roverOpt.get();
-            model.addAttribute("rover", r);
-            log.info("Returning \"{}\" with rover set to {}", "rover", r);
-            return "rover";
-        }
-        model.addAttribute("rover", new Rover());
-        log.info("No rover found, returning \"{}\" with rover set to {}",
-                "welcome", model.getAttribute("rover"));
-        return "welcome";
-    }
-
 
 }

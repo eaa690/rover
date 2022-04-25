@@ -40,38 +40,38 @@ public class RoverApplication {
 		roverRepository.save(new Rover(7L, "black-rover", "9437"));
 	}
 
-	@Scheduled(fixedDelay = 10000)
-	public void getScriptOutput() {
-		final Optional<List<Rover>> roversOpt = roverRepository.findAll();
-		if (roversOpt.isPresent()) {
-			final List<Rover> rovers = roversOpt.get();
-			rovers.forEach(rover -> {
-				try {
-					log.debug("Retrieving script output from rover...");
-					final Process process = Runtime.getRuntime().exec("ssh pi@" + rover.getName()
-							+ " cat /home/pi/run.log");
-					process.waitFor(10, TimeUnit.SECONDS);
-					final BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-					final StringBuilder sb = new StringBuilder();
-					String line;
-					while ((line = inputReader.readLine()) != null) {
-						log.debug("Input stream received: {}", line);
-						sb.append(line).append("\n");
-					}
-					final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-					while ((line = errorReader.readLine()) != null) {
-						log.debug("Error stream received: {}", line);
-						sb.append(line).append("\n");
-					}
-					inputReader.close();
-					errorReader.close();
-					log.debug("receive complete");
-					rover.setScriptOutput(sb.toString());
-					roverRepository.save(rover);
-				} catch (InterruptedException | IOException e) {
-					log.error(e.getMessage(), e);
-				}
-			});
-		}
-	}
+//	@Scheduled(fixedDelay = 10000)
+//	public void getScriptOutput() {
+//		final Optional<List<Rover>> roversOpt = roverRepository.findAll();
+//		if (roversOpt.isPresent()) {
+//			final List<Rover> rovers = roversOpt.get();
+//			rovers.forEach(rover -> {
+//				try {
+//					log.debug("Retrieving script output from rover...");
+//					final Process process = Runtime.getRuntime().exec("ssh pi@" + rover.getName()
+//							+ " cat /home/pi/run.log");
+//					process.waitFor(10, TimeUnit.SECONDS);
+//					final BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//					final StringBuilder sb = new StringBuilder();
+//					String line;
+//					while ((line = inputReader.readLine()) != null) {
+//						log.debug("Input stream received: {}", line);
+//						sb.append(line).append("\n");
+//					}
+//					final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+//					while ((line = errorReader.readLine()) != null) {
+//						log.debug("Error stream received: {}", line);
+//						sb.append(line).append("\n");
+//					}
+//					inputReader.close();
+//					errorReader.close();
+//					log.debug("receive complete");
+//					rover.setScriptOutput(sb.toString());
+//					roverRepository.save(rover);
+//				} catch (InterruptedException | IOException e) {
+//					log.error(e.getMessage(), e);
+//				}
+//			});
+//		}
+//	}
 }

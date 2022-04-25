@@ -9,5 +9,7 @@ public interface RoverRepository extends Repository<Rover, Long> {
 
     Optional<List<Rover>> findAll();
 
+    Optional<Rover> findById(final Long roverId);
+
     Rover save(Rover rover);
 }
