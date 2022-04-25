@@ -23,6 +23,14 @@
             var str="rover.rainbow()\nrover.show()";
             document.getElementById("command").value=str;
         }
+        function ledsOff() {
+            var str="rover.clear()\nrover.show()";
+            document.getElementById("command").value=str;
+        }
+        function ledsForwardTakePicture() {
+            var str="rover.rainbow()\nrover.show()\nrover.forward(50, 2)\nrover.takePicture()";
+            document.getElementById("command").value=str;
+        }
     </script>
   </head>
   <body>
@@ -75,7 +83,15 @@ except Exception as e:
                             <td>Show rainbow of colors</td>
                             <td align="center"><button onclick="rainbow()">Set command</button></td>
                         </tr>
+                        <tr>
+                            <td>Turn off LEDs</td>
+                            <td align="center"><button onclick="ledsOff()">Set command</button></td>
+                        </tr>
                         <tr><th colspan="2">Intermediate Commands</th></tr>
+                        <tr>
+                            <td>Sets LEDs to a rainbow of colors, moves the rover forward at 1/2 speed for 2 seconds, then takes a picture</td>
+                            <td align="center"><button onclick="ledsForwardTakePicture()">Set command</button></td>
+                        </tr>
                         <tr><th colspan="2">Advanced Commands</th></tr>
                     </table>
                 </td>
