@@ -59,7 +59,7 @@ public class WebController {
     public String rover(@ModelAttribute("rover") final Rover rover, final Model model) {
         log.info("POST /rover called with rover: {}", rover);
         StringBuilder sb = new StringBuilder();
-        sb.append("import rover\n");
+        sb.append("import rover, time\n");
         sb.append("try:\n");
         sb.append("  rover.init(100)\n");
         final String[] commands = rover.getCommand().split("\n");
