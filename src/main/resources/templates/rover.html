@@ -6,6 +6,12 @@
     <title>EAA 690 Summer Camp 2022 - M.A.R.S Rover</title>
     <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
     <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <script>
+        function takePictureCmd() {
+            var str="rover.takePicture()";
+            document.getElementById("command").value=str;
+        }
+    </script>
   </head>
   <body>
     <main role="main" class="container">
@@ -24,7 +30,7 @@ import rover
 try:
   rover.init(0)
             </pre>
-                        <textarea rows="20" cols="80" th:field="*{command}"></textarea>
+                        <textarea rows="20" cols="80" th:field="*{command}" id="command"></textarea>
                         <pre>
 except Exception as e:
   print (e)
@@ -33,6 +39,22 @@ except Exception as e:
                         <p><a th:href="@{${'/rover/' + rover.id}}"
                               target="_blank" rel="noopener noreferrer">Script output</a></p>
                     </form>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <th>Description</th>
+                            <th>Replace Command Text</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                Takes a picture, and uploads it to "JPL"
+                            </td>
+                            <td>
+                                <button onclick="takePictureCmd()">takePicture()</button>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
         </table>
