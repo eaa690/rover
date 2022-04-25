@@ -35,6 +35,10 @@
             var str="distance = rover.getDistance()\nprint(distance)";
             document.getElementById("command").value=str;
         }
+        function scenario1() {
+            var str="rover.clear()\nrover.show()\nrover.forward(50, 0)\ndistance = rover.getDistance()\nwhile distance > 20:\n  time.sleep(0.1)\n  distance = rover.getDistance()\nrover.stop()\nrover.setColor(rover.fromRGB(0, 0, 255))\nrover.show()\nrover.takePicture()\nrover.clear()\nrover.show()"
+            document.getElementById("command").value=str;
+        }
     </script>
   </head>
   <body>
@@ -99,6 +103,10 @@ except Exception as e:
                         <tr>
                             <td>Sets LEDs to a rainbow of colors, moves the rover forward at 1/2 speed for 2 seconds, then takes a picture</td>
                             <td align="center"><button onclick="ledsForwardTakePicture()">Set command</button></td>
+                        </tr>
+                        <tr>
+                            <td>Turns off LEDs, moves rover forward at 1/2 speed until an object is detected within 20cm, then stops to rover.  Sets the color to blue, takes a picture, then turns the LEDs off again.</td>
+                            <td align="center"><button onclick="scenario1()">Set command</button></td>
                         </tr>
                         <tr><th colspan="2">Advanced Commands</th></tr>
                     </table>
