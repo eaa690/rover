@@ -11,6 +11,18 @@
             var str="rover.takePicture()";
             document.getElementById("command").value=str;
         }
+        function moveForwardHalfFor2() {
+            var str="rover.forward(50, 2)";
+            document.getElementById("command").value=str;
+        }
+        function moveReverseHalfFor2() {
+            var str="rover.reverse(50, 2)";
+            document.getElementById("command").value=str;
+        }
+        function rainbow() {
+            var str="rover.rainbow()\nrover.show()";
+            document.getElementById("command").value=str;
+        }
     </script>
   </head>
   <body>
@@ -40,20 +52,31 @@ except Exception as e:
                               target="_blank" rel="noopener noreferrer">Script output</a></p>
                     </form>
                 </td>
-                <td>
-                    <table>
+                <td valign="top">
+                    <table border="1">
+                        <tr><td colspan="2">Simple Commands</td></tr>
                         <tr>
                             <th>Description</th>
                             <th>Replace Command Text</th>
                         </tr>
                         <tr>
-                            <td>
-                                Takes a picture, and uploads it to "JPL"
-                            </td>
-                            <td>
-                                <button onclick="takePictureCmd()">takePicture()</button>
-                            </td>
+                            <td>Takes a picture, and uploads it to "JPL"</td>
+                            <td align="center"><button onclick="takePictureCmd()">Set command</button></td>
                         </tr>
+                        <tr>
+                            <td>Moves forward at 1/2 speed for 2 seconds</td>
+                            <td align="center"><button onclick="moveForwardHalfFor2()">Set command</button></td>
+                        </tr>
+                        <tr>
+                            <td>Moves backward at 1/2 speed for 2 seconds</td>
+                            <td align="center"><button onclick="moveReverseHalfFor2()">Set command</button></td>
+                        </tr>
+                        <tr>
+                            <td>Show rainbow of colors</td>
+                            <td align="center"><button onclick="rainbow()">Set command</button></td>
+                        </tr>
+                        <tr><td colspan="2">Intermediate Commands</td></tr>
+                        <tr><td colspan="2">Advanced Commands</td></tr>
                     </table>
                 </td>
             </tr>
