@@ -90,7 +90,7 @@ public class WebController {
         try {
             log.info("Sending script to rover...");
             final Process process = Runtime.getRuntime().exec("scp -p " + rover.getName() +
-                    "-command.py pi@" + rover.getName() + ":~");
+                    "-command.py pi@" + rover.getName() + ":/home/pi/new");
             process.waitFor(10, TimeUnit.SECONDS);
             final BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
