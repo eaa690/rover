@@ -51,7 +51,7 @@ public class PicturesController {
 
     @GetMapping("/pictures/{roverId}/latest")
     public ResponseEntity<Resource> getLatestPicture(@PathVariable("roverId") Long roverId) {
-        log.info("GET /pictures/{}/latest called", roverId);
+        log.debug("GET /pictures/{}/latest called", roverId);
         final Resource file = getLatestImageAsResource(roverId);
         if (file != null) {
             return ResponseEntity
@@ -111,10 +111,10 @@ public class PicturesController {
             try {
                 final Resource resource = new UrlResource(teamLocation.resolve(file.getFileName()).toUri());
                 if (resource.exists() && resource.isFile()) {
-                    log.info("Adding resource with lastModified: {} to TreeMap", resource.lastModified());
+                    log.debug("Adding resource with lastModified: {} to TreeMap", resource.lastModified());
                     resourceTree.put(resource.lastModified(), resource);
                 } else {
-                    log.info("No file found for: {}", resource);
+                    log.debug("No file found for: {}", resource);
                 }
             } catch (IOException e) {
                 log.error("Could not read file: " + file);
@@ -124,7 +124,7 @@ public class PicturesController {
         if (entry != null) {
             final Resource resource = entry.getValue();
             if (resource.exists() || resource.isReadable()) {
-                log.info("Returning resource: {}", resource.getFilename());
+                log.debug("Returning resource: {}", resource.getFilename());
                 return resource;
             }
             log.error("Could not read file: " + resource);
@@ -141,16 +141,16 @@ public class PicturesController {
      */
     private Stream<Path> loadAll(final Long roverId) {
         final Path teamLocation = rootLocation.resolve(roverId.toString());
-        log.info("Loading all files at path {}", teamLocation);
+        log.debug("Loading all files at path {}", teamLocation);
         try {
             return Files.walk(teamLocation, 1)
                     .filter(path -> !path.equals(teamLocation))
                     .map(teamLocation::relativize)
-                    .peek(path -> log.info("Path found: {}", path));
+                    .peek(path -> log.debug("Path found: {}", path));
         } catch (IOException e) {
             log.error("Failed to read stored files", e);
         }
-        log.info("[loadAll] Returning null");
+        log.debug("[loadAll] Returning null");
         return null;
     }
 
