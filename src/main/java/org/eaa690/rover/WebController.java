@@ -34,11 +34,11 @@ public class WebController {
 
     @GetMapping("/")
     public String main(final Model model) {
-        log.info("GET / called");
+        log.debug("GET / called");
         model.addAttribute("message", message);
         model.addAttribute("rover", new Rover());
         roverRepository.findAll().ifPresent(rovers -> model.addAttribute("rovers", rovers));
-        log.info("Returning \"welcome\"");
+        log.debug("Returning \"welcome\"");
         return "welcome";
     }
 
