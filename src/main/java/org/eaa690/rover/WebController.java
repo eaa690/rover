@@ -61,7 +61,7 @@ public class WebController {
         StringBuilder sb = new StringBuilder();
         sb.append("import rover\n");
         sb.append("try:\n");
-        sb.append("  rover.init(0)\n");
+        sb.append("  rover.init(100)\n");
         final String[] commands = rover.getCommand().split("\n");
         for (String command : commands) {
             sb.append("  ");

@@ -40,7 +40,7 @@
 import rover
 
 try:
-  rover.init(0)
+  rover.init(100)
             </pre>
                         <textarea rows="20" cols="80" th:field="*{command}" id="command"></textarea>
                         <pre>
@@ -54,11 +54,11 @@ except Exception as e:
                 </td>
                 <td valign="top">
                     <table border="1">
-                        <tr><td colspan="2">Simple Commands</td></tr>
                         <tr>
                             <th>Description</th>
                             <th>Replace Command Text</th>
                         </tr>
+                        <tr><th colspan="2">Simple Commands</th></tr>
                         <tr>
                             <td>Takes a picture, and uploads it to "JPL"</td>
                             <td align="center"><button onclick="takePictureCmd()">Set command</button></td>
@@ -75,8 +75,8 @@ except Exception as e:
                             <td>Show rainbow of colors</td>
                             <td align="center"><button onclick="rainbow()">Set command</button></td>
                         </tr>
-                        <tr><td colspan="2">Intermediate Commands</td></tr>
-                        <tr><td colspan="2">Advanced Commands</td></tr>
+                        <tr><th colspan="2">Intermediate Commands</th></tr>
+                        <tr><th colspan="2">Advanced Commands</th></tr>
                     </table>
                 </td>
             </tr>
