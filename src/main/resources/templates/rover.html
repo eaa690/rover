@@ -31,6 +31,10 @@
             var str="rover.rainbow()\nrover.show()\nrover.forward(50, 2)\nrover.takePicture()";
             document.getElementById("command").value=str;
         }
+        function printDistance() {
+            var str="distance = rover.getDistance()\nprint(distance)";
+            document.getElementById("command").value=str;
+        }
     </script>
   </head>
   <body>
@@ -86,6 +90,10 @@ except Exception as e:
                         <tr>
                             <td>Turn off LEDs</td>
                             <td align="center"><button onclick="ledsOff()">Set command</button></td>
+                        </tr>
+                        <tr>
+                            <td>Detect distance to object, and print the value to output</td>
+                            <td align="center"><button onclick="printDistance()">Set command</button></td>
                         </tr>
                         <tr><th colspan="2">Intermediate Commands</th></tr>
                         <tr>
