@@ -82,13 +82,13 @@ public class WebController {
             log.error(e.getMessage(), e);
         }
         model.addAttribute("rover", rover);
-        log.info("Returning \"rover\"");
+        log.debug("Returning \"rover\"");
         return "rover";
     }
 
     @PostMapping("/rover/authenticate")
     public String authRover(@ModelAttribute("rover") final Rover rover, final Model model) {
-        log.info("POST /rover/authenticate called with rover: {}", rover);
+        log.debug("POST /rover/authenticate called with rover: {}", rover);
         final Optional<Rover> roverOpt = roverRepository
                 .findAll()
                 .flatMap(rovers -> rovers
@@ -98,11 +98,11 @@ public class WebController {
         if (roverOpt.isPresent()) {
             final Rover r = roverOpt.get();
             model.addAttribute("rover", r);
-            log.info("Returning \"{}\" with rover set to {}", "rover", r);
+            log.debug("Returning \"{}\" with rover set to {}", "rover", r);
             return "rover";
         }
         model.addAttribute("rover", new Rover());
-        log.info("No rover found, returning \"{}\" with rover set to {}",
+        log.debug("No rover found, returning \"{}\" with rover set to {}",
                 "welcome", model.getAttribute("rover"));
         return "welcome";
     }
@@ -132,21 +132,21 @@ public class WebController {
 
     private void formatScript(final Rover rover) {
         try {
-            log.info("formatting script...");
+            log.debug("formatting script...");
             final Process process = Runtime.getRuntime().exec("black " + rover.getName() + "-command.py");
             process.waitFor(5, TimeUnit.SECONDS);
             final BufferedReader inputReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = inputReader.readLine()) != null) {
-                log.info("Input stream received: {}", line);
+                log.debug("Input stream received: {}", line);
             }
             final BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             while ((line = errorReader.readLine()) != null) {
-                log.info("Error stream received: {}", line);
+                log.debug("Error stream received: {}", line);
             }
             inputReader.close();
             errorReader.close();
-            log.info("format complete");
+            log.debug("format complete");
         } catch (InterruptedException | IOException e) {
             log.error(e.getMessage(), e);
         }
